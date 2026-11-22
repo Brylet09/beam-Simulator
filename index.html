@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BEAMLAB — Beam Support Reactions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#f3f6fc;--pn:#fff;--ln:#dde3f0;--tx:#0f172a;--mu:#64748b;--ac:#2563eb;--ac2:#0891b2;--ld:#d97706;--ok:#059669;--bad:#dc2626;--bm:#334155;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0f1c;--pn:#111a2e;--ln:#1e2a44;--tx:#e6ecf8;--mu:#8a99b8;--ac:#4f8cff;--ac2:#22d3ee;--ld:#fbbf24;--ok:#34d399;--bad:#f87171;--bm:#8aa0c0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a0f1c;--pn:#111a2e;--ln:#1e2a44;--tx:#e6ecf8;--mu:#8a99b8;--ac:#4f8cff;--ac2:#22d3ee;--ld:#fbbf24;--ok:#34d399;--bad:#f87171;--bm:#8aa0c0;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--pn);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--pn);border-bottom:1px solid var(--ln)}
+.lg{font-weight:700;letter-spacing:.08em;display:flex;align-items:center;gap:8px;margin-right:auto}
+.lg i{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:inline-block}
+.tg{color:var(--mu);font-size:12px;display:none}
+main{display:grid;gap:14px;padding:14px;max-width:1500px;margin:0 auto 76px}
+.pane{display:none;min-width:0}
+.tab-setup #setup,.tab-diagram #diagram,.tab-results #results{display:block}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:0 0 10px}
+input,select{min-height:44px;width:100%;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);padding:0 10px;font:inherit}
+input:focus,select:focus,.btn:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+.btn{min-height:44px;min-width:44px;padding:0 12px;border-radius:10px;border:1px solid var(--ln);background:var(--pn);color:var(--tx);font:600 13px Inter,system-ui,sans-serif;cursor:pointer;transition:border-color .15s,transform .1s}
+.btn:hover{border-color:var(--ac)}.btn:active{transform:scale(.97)}
+.add{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fl span{display:block;font-size:11px;color:var(--mu);margin-bottom:3px}
+.it{border:1px solid var(--ln);border-radius:12px;padding:10px;margin-top:8px}
+.it.sel{border-color:var(--ac2);box-shadow:0 0 0 1px var(--ac2)}
+.ih{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sv{overflow-x:auto;border-radius:12px;background:var(--bg);border:1px solid var(--ln)}
+svg{display:block;width:100%;min-width:640px;height:auto;user-select:none;-webkit-user-select:none}
+svg text{font:11px Inter,system-ui,sans-serif;fill:var(--mu)}
+.dr{cursor:grab}.dr.sel{filter:drop-shadow(0 0 5px var(--ac2))}
+.hint{color:var(--mu);font-size:12px;margin:8px 2px 0}
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin:12px 0}
+.rc{background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:10px;text-align:center}
+.rc b{display:block;font-size:22px;color:var(--ok)}.rc small{color:var(--mu)}
+.badge{display:inline-block;padding:4px 10px;border-radius:99px;background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok);font-size:12px;font-weight:600}
+.bad{border-color:var(--bad)}.bad b{color:var(--bad)}
+summary{cursor:pointer;font-weight:600;min-height:28px}
+.eq{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:15px;padding:8px 10px;margin:6px 0;background:var(--bg);border-radius:8px;overflow-x:auto;white-space:nowrap}
+p{margin:6px 0;color:var(--mu)}
+nav.bn{position:fixed;bottom:0;left:0;right:0;display:flex;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:var(--pn);border-top:1px solid var(--ln);z-index:9}
+nav.bn button{flex:1}
+nav.bn button[aria-current="true"]{background:var(--ac);color:#fff;border-color:transparent}
+@media(min-width:700px){.tg{display:block}}
+@media(min-width:1024px){main{grid-template-columns:330px minmax(0,1fr) 390px;align-items:start;margin-bottom:14px}.pane,.tab-setup #setup,.tab-diagram #diagram,.tab-results #results{display:block}nav.bn{display:none}}
+</style>
+</head>
+<body class="tab-diagram">
+<header>
+  <span class="lg"><i></i>BEAMLAB</span><span class="tg">Understand the forces. Master the structure.</span>
+  <select id="ex" aria-label="Examples" style="width:auto;max-width:150px"></select>
+  <button class="btn" id="clr">Clear</button>
+  <button class="btn" id="th" aria-label="Toggle theme">☀</button>
+</header>
+<main>
+  <section class="pane" id="setup">
+    <div class="card">
+      <h2>Beam</h2>
+      <label class="fl"><span>Length (m)</span><input id="L" type="number" inputmode="decimal" step="any"></label>
+    </div>
+    <div class="card">
+      <h2>Add support</h2>
+      <div class="add"><button class="btn" data-add="pin">+ Pin</button><button class="btn" data-add="roller">+ Roller</button><button class="btn" data-add="fixed">+ Fixed</button></div>
+      <h2>Add load</h2>
+      <div class="add"><button class="btn" data-add="point">+ Point</button><button class="btn" data-add="udl">+ UDL</button><button class="btn" data-add="tri">+ Triangular</button><button class="btn" data-add="moment">+ Moment</button></div>
+    </div>
+    <div class="card"><h2>Elements</h2><div id="list"></div></div>
+  </section>
+  <section class="pane" id="diagram">
+    <div class="card">
+      <h2>Beam diagram</h2>
+      <div class="sv"><svg id="svg" viewBox="0 0 800 320"><g id="scene"></g></svg></div>
+      <button class="btn" id="dgb" style="margin-top:12px;width:100%">Show shear &amp; moment diagrams</button><div id="dg"></div><p class="hint">Drag loads and supports along the beam (snaps to 0.05 m) or edit positions numerically in Setup. Orange = loads, green = reactions. Units: kN, m.</p>
+    </div>
+  </section>
+  <section class="pane" id="results"></section>
+</main>
+<nav class="bn">
+  <button class="btn" data-tab="setup">Setup</button><button class="btn" data-tab="diagram" aria-current="true">Diagram</button><button class="btn" data-tab="results">Results</button>
+</nav>
+<script>
+const $=s=>document.querySelector(s),f=(n,d=3)=>{n=Math.abs(n)<5e-10?0:n;return String(+n.toFixed(d)).replace('-','−')};
+let S={L:6,sup:[],ld:[],sel:null,r:null},uid=1,drag=null;
+const U=(t,o)=>({id:uid++,t,...o});
+const pin=x=>U('pin',{x}),rol=x=>U('roller',{x}),fix=x=>U('fixed',{x});
+const pt=(x,mag,dir='down')=>U('point',{x,mag,dir}),ud=(x,x2,mag,dir='down')=>U('udl',{x,x2,mag,dir}),tr=(x,x2,mag,peak='end',dir='down')=>U('tri',{x,x2,mag,peak,dir}),mo=(x,mag,dir='ccw')=>U('moment',{x,mag,dir});
+const EX={
+'Simply supported · center load':()=>({L:6,sup:[pin(0),rol(6)],ld:[pt(3,10)]}),
+'Simply supported · eccentric load':()=>({L:6,sup:[pin(0),rol(6)],ld:[pt(2,12)]}),
+'Simply supported · full UDL':()=>({L:6,sup:[pin(0),rol(6)],ld:[ud(0,6,4)]}),
+'Cantilever · end load':()=>({L:4,sup:[fix(0)],ld:[pt(4,10)]}),
+'Cantilever · UDL':()=>({L:4,sup:[fix(0)],ld:[ud(0,4,5)]}),
+'Multiple point loads':()=>({L:8,sup:[pin(0),rol(8)],ld:[pt(2,6),pt(5,10),pt(7,4)]}),
+'Applied moment (CCW)':()=>({L:6,sup:[pin(0),rol(6)],ld:[mo(3,12)]}),
+'Triangular + horizontal load':()=>({L:6,sup:[pin(0),rol(6)],ld:[tr(0,6,6),pt(1,5,'right')]})};
+/* ---------- engine (SI: kN, m; →, ↑, CCW positive) ---------- */
+function names(){const s=[...S.sup].sort((a,b)=>a.x-b.x);s.forEach((q,i)=>q.n='ABCDEFGH'[i]||'S'+i);return s}
+function equiv(){return S.ld.map(l=>{const m=l.mag,o={l,Fx:0,Fy:0,M:0,x:l.x,R:0};
+ if(l.t==='point'){if(l.dir==='down')o.Fy=-m;else if(l.dir==='up')o.Fy=m;else o.Fx=l.dir==='right'?m:-m}
+ else if(l.t==='moment')o.M=l.dir==='ccw'?m:-m;
+ else{const len=l.x2-l.x;o.R=l.t==='udl'?m*len:m*len/2;o.Fy=(l.dir==='up'?1:-1)*o.R;
+  o.x=l.t==='udl'?l.x+len/2:(l.peak==='start'?l.x+len/3:l.x2-len/3)}
+ return o})}
+function rank(M){const A=M.map(r=>[...r]),tol=1e-9*Math.max(1,...A.flat().map(Math.abs));let r=0;
+ for(let c=0;c<A[0].length&&r<A.length;c++){let p=r;for(let i=r+1;i<A.length;i++)if(Math.abs(A[i][c])>Math.abs(A[p][c]))p=i;
+  if(Math.abs(A[p][c])<=tol)continue;[A[r],A[p]]=[A[p],A[r]];
+  for(let i=r+1;i<A.length;i++){const k=A[i][c]/A[r][c];for(let j=c;j<A[0].length;j++)A[i][j]-=k*A[r][j]}r++}return r}
+function solve(A,b){const n=b.length,M=A.map((r,i)=>[...r,b[i]]);
+ for(let c=0;c<n;c++){let p=c;for(let i=c+1;i<n;i++)if(Math.abs(M[i][c])>Math.abs(M[p][c]))p=i;[M[c],M[p]]=[M[p],M[c]];
+  for(let i=0;i<n;i++)if(i!==c){const k=M[i][c]/M[c][c];for(let j=c;j<=n;j++)M[i][j]-=k*M[c][j]}}
+ return M.map((r,i)=>r[n]/r[i])}
+function validate(){const L=S.L;if(!(L>0))return'Beam length must be greater than zero.';
+ for(const s of S.sup)if(!(s.x>=0&&s.x<=L))return`A ${s.t} support at x = ${f(s.x)} m lies outside the beam (0 to ${f(L)} m).`;
+ for(const l of S.ld){if(!(l.x>=0&&l.x<=L)||(l.x2!=null&&!(l.x2<=L)))return`A ${l.t} load lies outside the beam (0 to ${f(L)} m).`;
+  if(l.x2!=null&&!(l.x2>l.x))return'A distributed load must end after it starts.';
+  if(!(l.mag>=0))return'Magnitudes must be zero or positive. Use the direction selector for the sense.'}return''}
+const term=(c,v,s)=>({c,v,s});
+const ex=ts=>{let s='';ts.forEach(t=>{if(Math.abs(t.c)<1e-12)return;const a=Math.abs(t.c),b=t.s||(t.v?(Math.abs(a-1)<1e-12?t.v:t.v+'('+f(a)+')'):f(a));s+=s?(t.c<0?' − ':' + ')+b:(t.c<0?'−':'')+b});return(s||'0')+' = 0'};
+function analyze(){
+ const err=validate();if(err)return{st:'error',msg:err};
+ const sup=names(),E=equiv(),un=[];
+ sup.forEach(s=>{if(s.t!=='roller')un.push({c:'x',x:s.x,lab:s.n+'x',col:[1,0,0]});un.push({c:'y',x:s.x,lab:s.n+'y',col:[0,1,s.x]});if(s.t==='fixed')un.push({c:'m',x:s.x,lab:'M'+s.n,col:[0,0,1]})});
+ if(!un.length)return{st:'unstable',msg:'No supports yet. Add a pin and a roller, or one fixed support, to restrain the beam.'};
+ const A=[0,1,2].map(r=>un.map(u=>u.col[r])),rk=rank(A);
+ if(rk<3)return{st:'unstable',msg:`These supports give only ${rk} independent restraint${rk===1?'':'s'}, but a beam needs 3 (horizontal, vertical and rotation). It would move or rotate under load, so equilibrium has no unique answer. Try a pin plus a roller at different positions, or a single fixed support.`};
+ if(un.length>3)return{st:'indet',msg:`${un.length} unknown reactions but only 3 equilibrium equations: the beam is statically indeterminate to degree ${un.length-3}. Its reactions depend on beam stiffness, which this version doesn’t model. Remove ${un.length-3} restraint${un.length>4?'s':''} to solve it by statics.`};
+ const sx=E.reduce((a,e)=>a+e.Fx,0),sy=E.reduce((a,e)=>a+e.Fy,0),sm=E.reduce((a,e)=>a+e.Fy*e.x+e.M,0);
+ solve(A,[-sx,-sy,-sm]).forEach((v,i)=>un[i].v=v);
+ const xA=sup[0].x,N=sup[0].n,shown=new Set(),steps=[],u$=u=>`$${u.lab} = ${f(u.v)} ${u.c==='m'?'kN·m':'kN'}`;
+ const AR={down:'↓',up:'↑',left:'←',right:'→'};
+ steps.push({t:'Equivalent loads',L:E.length?E.map(e=>{const l=e.l,d=l.dir==='up'?'↑':'↓';
+  return l.t==='point'?`P = ${f(l.mag)} kN ${AR[l.dir]} at x = ${f(l.x)} m`
+  :l.t==='moment'?`M = ${f(l.mag)} kN·m ${l.dir==='ccw'?'↺':'↻'} at x = ${f(l.x)} m`
+  :l.t==='udl'?`R = wL = ${f(l.mag)}(${f(l.x2-l.x)}) = ${f(e.R)} kN ${d}, acting at x = ${f(e.x)} m (midpoint of the loaded length)`
+  :`R = ½wL = ½(${f(l.mag)})(${f(l.x2-l.x)}) = ${f(e.R)} kN ${d}, acting at x = ${f(e.x)} m (⅓ of the length from the larger end)`}):['No loads applied.']});
+ const ux=un.filter(u=>u.c==='x');ux.forEach(u=>shown.add(u));
+ steps.push({t:'Horizontal equilibrium',L:['$ΣFx = 0  →  '+ex([...ux.map(u=>term(1,u.lab)),...E.filter(e=>e.Fx).map(e=>term(e.Fx))]),...ux.map(u$)]});
+ const mt=[...un.filter(u=>u.c==='y').map(u=>term(u.x-xA,u.lab)),...un.filter(u=>u.c==='m').map(u=>term(1,u.lab)),...E.filter(e=>e.Fy).map(e=>term(e.Fy*(e.x-xA),0,`${f(Math.abs(e.Fy))}(${f(Math.abs(e.x-xA))})`)),...E.filter(e=>e.M).map(e=>term(e.M))];
+ const um=un.filter(u=>u.c==='m'||(u.c==='y'&&Math.abs(u.x-xA)>1e-12));um.forEach(u=>shown.add(u));
+ steps.push({t:`Moment equilibrium about ${N}`,L:[`Moments about support ${N} (x = ${f(xA)} m) eliminate the reactions acting there. Counterclockwise is positive.`,`$ΣM${N} = 0  →  ${ex(mt)}`,...um.map(u$)]});
+ steps.push({t:'Vertical equilibrium',L:['$ΣFy = 0  →  '+ex([...un.filter(u=>u.c==='y').map(u=>term(1,u.lab)),...E.filter(e=>e.Fy).map(e=>term(e.Fy))]),...un.filter(u=>!shown.has(u)).map(u$)]});
+ const F=[],Mo=[],D=[];
+ un.forEach(u=>{if(u.c==='y')F.push({x:u.x,v:u.v});if(u.c==='m')Mo.push({x:u.x,v:u.v})});
+ E.forEach(e=>{const l=e.l;if(l.t==='point'&&e.Fy)F.push({x:l.x,v:e.Fy});else if(l.t==='moment')Mo.push({x:l.x,v:e.M});else if(l.x2!=null){const s=l.dir==='up'?1:-1,len=l.x2-l.x;D.push({a:l.x,b:l.x2,c0:l.t==='udl'||l.peak==='start'?s*l.mag:0,c1:l.t==='udl'?0:s*l.mag/len*(l.peak==='end'?1:-1)})}});
+ return{st:'ok',un,steps,ctx:{F,Mo,D}}}
+/* ---------- shear & moment (left-of-cut method; V up+, M sagging+) ---------- */
+const exs=ts=>ex(ts).slice(0,-4);
+const VM=(c,x,sd)=>{const t=1e-9,vt=[],mt=[];let V=0,M=0;const inc=p=>p<x-t||(sd>0&&p<=x+t);
+ c.F.forEach(p=>{if(inc(p.x)){V+=p.v;M+=p.v*(x-p.x);vt.push(term(p.v));mt.push(term(p.v*(x-p.x),0,`${f(Math.abs(p.v))}(${f(Math.abs(x-p.x))})`))}});
+ c.Mo.forEach(p=>{if(inc(p.x)){M-=p.v;mt.push(term(-p.v))}});
+ c.D.forEach(d=>{if(x>d.a){const l=Math.min(x,d.b)-d.a,F=d.c0*l+d.c1*l*l/2,Q=d.c0*l*l/2+d.c1*l**3/3,m=(x-d.a)*F-Q;V+=F;M+=m;vt.push(term(F));if(Math.abs(F)>1e-12)mt.push(term(m,0,`${f(Math.abs(F))}(${f(Math.abs(m/F))})`))}});
+ return[V,M,vt,mt]};
+const bis=(c,a,b,i,fa)=>{let lo=a,hi=b;for(let k=0;k<60;k++){const m=(lo+hi)/2,fm=VM(c,m,1)[i];if(Math.abs(fm)<1e-12)return m;if(fa*fm<0)hi=m;else{lo=m;fa=fm}}return(lo+hi)/2};
+function summ(c,L){
+ const sg=v=>Math.abs(v)<1e-9?0:Math.sign(v),bp=[...new Map([0,L,...c.F.map(p=>p.x),...c.Mo.map(p=>p.x),...c.D.flatMap(d=>[d.a,d.b])].filter(x=>x>=-1e-9&&x<=L+1e-9).map(x=>[Math.round(x*1e9),Math.min(L,Math.max(0,x))])).values()].sort((a,b)=>a-b),crv=[],Vc=[];let Z=[],lm=0;
+ bp.slice(0,-1).forEach((p,i)=>{const q=bp[i+1];let pv,pm,px;
+  for(let j=0;j<=60;j++){const x=p+(q-p)*j/60,[V,M]=VM(c,x,j<60?1:-1);crv.push([x,V,M]);
+   if(j){if(sg(pv)*sg(V)<0)Vc.push(bis(c,px,x,0,pv));if(sg(pm)*sg(M)<0)Z.push(bis(c,px,x,1,pm))}
+   else if(i&&sg(lm)*sg(M)<0)Z.push(p);
+   if((!j||j===60)&&Math.abs(M)<1e-7)Z.push(x);pv=V;pm=M;px=x;lm=M}});
+ Z=Z.sort((a,b)=>a-b).filter((z,i,a)=>!i||z-a[i-1]>1e-6);
+ const cand=crv.map(r=>[r[0],r[2]]);Vc.forEach(x=>cand.push([x,VM(c,x,1)[1]]));
+ const pick=(a,k,s)=>a.reduce((p,q)=>s*(q[k]-p[k])>1e-9?q:p);
+ return{crv,Z,Vc,vx:pick(crv,1,1),vn:pick(crv,1,-1),mx:pick(cand,1,1),mn:pick(cand,1,-1)}}
+const smry=r=>r.s||(r.s=summ(r.ctx,S.L));
+function sumCard(r){const s=smry(r),c=r.ctx,wk=(x,t)=>{for(const sd of[1,-1]){const o=VM(c,x,sd);if(Math.abs(o[1]-t)<1e-6)return`$M(${f(x)}) = ${exs(o[3])} = ${f(t)} kN·m`}return''},
+ Z=s.Z.map(z=>f(z)).join(', '),ls=['Cut the beam at x and sum the forces and moments of everything to its left. Sagging moment is positive.',`$Vmax = ${f(s.vx[1])} kN at x = ${f(s.vx[0])} m`,`$Vmin = ${f(s.vn[1])} kN at x = ${f(s.vn[0])} m`];
+ if(s.Vc.length)ls.push(`V = 0 at x = ${s.Vc.map(z=>f(z)).join(', ')} m, so M has a local peak there.`);
+ ls.push(`$Mmax = ${f(s.mx[1])} kN·m at x = ${f(s.mx[0])} m`,wk(s.mx[0],s.mx[1]),`$Mmin = ${f(s.mn[1])} kN·m at x = ${f(s.mn[0])} m`,wk(s.mn[0],s.mn[1]),Z?`$M = 0 at x = ${Z} m`:'M never reaches zero along the beam.');
+ return`<details class="card" open><summary>Step ${r.steps.length+1} · Shear &amp; bending moment</summary>${ls.filter(Boolean).map(l=>l[0]==='$'?`<div class="eq">${l.slice(1)}</div>`:`<p>${l}</p>`).join('')}</details>`}
+function qOut(){const c=S.r.ctx,L=S.L,x=S.qx;if(!(x>=0&&x<=L))return`<p>Enter a position between 0 and ${f(L)} m.</p>`;
+ const a=x<1e-9?null:VM(c,x,-1),b=x>L-1e-9?null:VM(c,x,1),o=b||a,jv=a&&b&&Math.abs(a[0]-b[0])>1e-9,jm=a&&b&&Math.abs(a[1]-b[1])>1e-9,v=(j,i)=>j?f(a[i])+' | '+f(b[i]):f(o[i]);
+ let h=`<div class="rg"><div class="rc"><small>V at x = ${f(x)} m</small><b>${v(jv,0)}</b><small>kN</small></div><div class="rc"><small>M at x = ${f(x)} m</small><b>${v(jm,1)}</b><small>kN·m</small></div></div>`;
+ h+=jv||jm?'<p>A point load, reaction or moment acts here, so the value jumps (left | right).</p>':`<div class="eq">V = ${exs(o[2])} = ${f(o[0])} kN</div><div class="eq">M = ${exs(o[3])} = ${f(o[1])} kN·m</div>`;return h}
+function plots(s){
+ const L=S.L,X=x=>X0+x*(X1-X0)/L,tk=[.1,.25,.5,1,2,5,10,20,50,100].find(t=>L/t<=12)||200,c=S.r.ctx,qv=S.qx>=0&&S.qx<=L,q=qv?VM(c,S.qx,S.qx>L-1e-9?-1:1):0;
+ const P=(y0,k,nm,un,col,mk,zs)=>{const v=s.crv.map(r=>r[k]),hi=Math.max(0,...v),lo=Math.min(0,...v),Y=t=>y0+8+(hi-t)/((hi-lo)||1)*120;
+  let g=txt(X0,y0-4,`${nm} (${un})`,'var(--tx)','start');
+  for(let i=0;i<=Math.round(L/tk);i++)g+=`<line x1="${X(i*tk)}" x2="${X(i*tk)}" y1="${y0+8}" y2="${y0+128}" stroke="var(--ln)"/>`;
+  [hi,lo].forEach(t=>g+=`<line x1="${X0}" x2="${X1}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--ln)" stroke-dasharray="3 3"/>`+txt(X0-6,Y(t)+4,f(t,2),0,'end'));
+  const p=s.crv.map(r=>`${X(r[0])},${Y(r[k])}`).join(' ');
+  g+=`<polygon points="${X(0)},${Y(0)} ${p} ${X(L)},${Y(0)}" fill="${col}" opacity=".18"/><polyline points="${p}" fill="none" stroke="${col}" stroke-width="2.2"/><line x1="${X0}" x2="${X1}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--mu)"/>`;
+  zs.forEach(z=>g+=`<circle cx="${X(z)}" cy="${Y(0)}" r="4.5" fill="var(--pn)" stroke="${col}" stroke-width="2"/>`);
+  mk.forEach(([x,t,a,cl])=>g+=`<circle cx="${X(x)}" cy="${Y(t)}" r="4" fill="${cl||col}"/>`+txt(X(x),Y(t)+(a?-8:16),f(t,2),cl||col));return g};
+ let o=P(24,1,'Shear force V','kN','var(--ac)',[[s.vx[0],s.vx[1],1],[s.vn[0],s.vn[1],0],...(q?[[S.qx,q[0],1,'var(--ac2)']]:[])],s.Vc);
+ o+=P(200,2,'Bending moment M','kN·m','var(--ok)',[[s.mx[0],s.mx[1],1],[s.mn[0],s.mn[1],0],...(q?[[S.qx,q[1],1,'var(--ac2)']]:[])],s.Z);
+ o+=`<line x1="${X0}" x2="${X1}" y1="358" y2="358" stroke="var(--mu)"/>`;
+ for(let i=0;i<=Math.round(L/tk);i++)o+=`<line x1="${X(i*tk)}" x2="${X(i*tk)}" y1="358" y2="364" stroke="var(--mu)"/>`+txt(X(i*tk),378,f(i*tk,2));
+ if(q)o+=`<line x1="${X(S.qx)}" x2="${X(S.qx)}" y1="16" y2="352" stroke="var(--ac2)" stroke-dasharray="4 3"/>`;
+ return o+txt(X1+20,378,'m')}
+function dgUpd(){const r=S.r;if(!S.dg||!r||r.st!=='ok')return;$('#dsv').innerHTML=plots(smry(r));$('#qo').innerHTML=qOut()}
+function renderDg(){const b=$('#dgb'),el=$('#dg'),r=S.r;
+ if(!r||r.st!=='ok'){b.style.display='none';el.innerHTML='';return}
+ b.style.display='';b.textContent=S.dg?'Hide shear & moment diagrams':'Show shear & moment diagrams';
+ if(!S.dg){el.innerHTML='';return}
+ if(!(S.qx>=0&&S.qx<=S.L))S.qx=+(S.L/2).toFixed(2);
+ el.innerHTML=`<div class="sv" style="margin-top:12px"><svg id="dsv" viewBox="0 0 800 388"></svg></div><p class="hint">Both plotted positive up (V up on the left of the cut, M sagging). Hollow dots mark zeros. Tap a diagram to pick a section.</p><div class="card" style="margin:12px 0 0"><h2>Shear &amp; moment at any point</h2><label class="fl"><span>Position x (m)</span><input id="qx" type="number" inputmode="decimal" step="any" value="${S.qx}"></label><div id="qo"></div></div>`;dgUpd()}
+const dirT=u=>u.c==='m'?(u.v>=0?'↺ CCW':'↻ CW'):u.c==='x'?(u.v>=0?'→':'←'):(u.v>=0?'↑':'↓');
+/* ---------- rendering ---------- */
+const W=800,X0=60,X1=740;
+const arrow=(x1,y1,x2,y2,c,w=2.5)=>{const a=Math.atan2(y2-y1,x2-x1),p=d=>`${x2-9*Math.cos(a+d)},${y2-9*Math.sin(a+d)}`;return`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}"/><polygon points="${x2},${y2} ${p(.4)} ${p(-.4)}" fill="${c}"/>`};
+const txt=(x,y,t,c,a='middle')=>`<text x="${x}" y="${y}" text-anchor="${a}" ${c?`style="fill:${c};font-weight:600"`:''}>${t}</text>`;
+function renderSvg(){
+ const L=S.L>0?S.L:1,sc=(X1-X0)/L,X=x=>X0+x*sc,r=S.r,sup=names(),ld='var(--ld)',mu='var(--mu)',ok='var(--ok)';
+ let o=`<rect x="${X0}" y="144" width="${X1-X0}" height="12" rx="3" fill="var(--bm)"/><line x1="${X0}" x2="${X1}" y1="285" y2="285" stroke="${mu}"/>`;
+ const st=[.1,.25,.5,1,2,5,10,20,50,100].find(s=>L/s<=12)||200;
+ for(let i=0;i<=Math.round(L/st);i++){const t=i*st;o+=`<line x1="${X(t)}" x2="${X(t)}" y1="285" y2="291" stroke="${mu}"/>${txt(X(t),304,f(t,2))}`}
+ o+=txt(X1+20,304,'m');
+ sup.forEach(s=>{const x=X(s.x);let g='';
+  if(s.t==='pin')g=`<path d="M${x} 156L${x-15} 182H${x+15}Z" fill="var(--ac)" opacity=".85"/><line x1="${x-22}" x2="${x+22}" y1="182" y2="182" stroke="${mu}" stroke-width="3"/>`;
+  else if(s.t==='roller')g=`<path d="M${x} 156L${x-15} 178H${x+15}Z" fill="var(--ac2)" opacity=".85"/><circle cx="${x-8}" cy="183" r="4.5" fill="none" stroke="${mu}" stroke-width="2"/><circle cx="${x+8}" cy="183" r="4.5" fill="none" stroke="${mu}" stroke-width="2"/><line x1="${x-22}" x2="${x+22}" y1="188" y2="188" stroke="${mu}" stroke-width="3"/>`;
+  else{const d=s.x<=L/2?-1:1;g=`<line x1="${x}" x2="${x}" y1="112" y2="188" stroke="${mu}" stroke-width="5"/>`+[0,1,2,3,4,5].map(i=>`<line x1="${x}" y1="${118+i*13}" x2="${x+d*11}" y2="${130+i*13}" stroke="${mu}" stroke-width="2"/>`).join('')}
+  o+=`<g class="dr${S.sel===s.id?' sel':''}" data-k="s" data-id="${s.id}"><rect x="${x-26}" y="108" width="52" height="86" fill="transparent"/>${g}${txt(x,208,s.n,'var(--tx)')}</g>`});
+ S.ld.forEach(l=>{const a=X(l.x),b=l.x2!=null?X(l.x2):a;let g='',hit='';
+  if(l.t==='point'){hit=`<rect x="${a-60}" y="66" width="120" height="80" fill="transparent"/>`;
+   g=l.dir==='down'?arrow(a,78,a,142,ld):l.dir==='up'?arrow(a,142,a,78,ld):arrow(l.dir==='right'?a-56:a+56,128,a,128,ld);
+   g+=txt(a,68,`${f(l.mag)} kN`,ld)}
+  else if(l.t==='moment'){const cw=l.dir==='cw',e=cw?a+24:a-24;
+   hit=`<rect x="${a-34}" y="66" width="68" height="82" fill="transparent"/>`;
+   g=`<path d="${cw?`M${a-24} 104A24 24 0 0 1 ${a+24} 104`:`M${a+24} 104A24 24 0 0 0 ${a-24} 104`}" fill="none" stroke="${ld}" stroke-width="2.5"/><polygon points="${e},112 ${e-5},102 ${e+5},102" fill="${ld}"/><line x1="${a}" x2="${a}" y1="142" y2="122" stroke="${ld}" stroke-dasharray="3 3"/>${txt(a,64,`${f(l.mag)} kN·m`,ld)}`}
+  else{const n=Math.max(2,Math.round((b-a)/30)),H=l.t==='udl'?42:48,top=142-H;
+   hit=`<rect x="${a}" y="80" width="${b-a}" height="66" fill="transparent"/>`;
+   const pts=l.t==='udl'?`${a},142 ${a},${top} ${b},${top} ${b},142`:l.peak==='end'?`${a},142 ${b},142 ${b},${top}`:`${a},142 ${b},142 ${a},${top}`;
+   g=`<polygon points="${pts}" fill="${ld}" opacity=".16" stroke="${ld}" stroke-width="1.5"/>`;
+   for(let i=0;i<=n;i++){const xx=a+(b-a)*i/n,h=l.t==='udl'?H:H*(l.peak==='end'?i/n:1-i/n);if(h<5)continue;g+=l.dir==='up'?arrow(xx,142,xx,142-h,ld,1.8):arrow(xx,142-h,xx,142,ld,1.8)}
+   g+=txt((a+b)/2,top-8,`${f(l.mag)} kN/m`,ld)}
+  o+=`<g class="dr${S.sel===l.id?' sel':''}" data-k="l" data-id="${l.id}">${hit}${g}</g>`});
+ if(r&&r.st==='ok')r.un.forEach(u=>{const x=X(u.x),z=Math.abs(u.v)<1e-9,lab=`${u.lab} = ${f(u.v)}`;
+  if(u.c==='y'){if(!z)o+=u.v>0?arrow(x,252,x,196,ok,3):arrow(x,196,x,252,ok,3);o+=txt(x,267,lab,ok)}
+  else if(u.c==='x'){const d=u.v>=0?1:-1;if(!z)o+=arrow(x,214,x+d*46,214,ok,3);o+=txt(x+(z?0:d*52),z?228:218,lab,ok,z?'middle':d>0?'start':'end')}
+  else{const cw=u.v<0;if(!z)o+=`<path d="${cw?`M${x+18} 232A18 18 0 0 1 ${x-18} 232`:`M${x-18} 232A18 18 0 0 0 ${x+18} 232`}" fill="none" stroke="${ok}" stroke-width="3"/><polygon points="${cw?x-18:x+18},224 ${cw?x-23:x+13},234 ${cw?x-13:x+23},234" fill="${ok}"/>`;o+=txt(x+(z?0:30),z?240:248,lab,ok,z?'middle':'start')}});
+ $('#scene').innerHTML=o}
+const fl=(lab,k,o,p)=>`<label class="fl"><span>${lab}</span><input type="number" inputmode="decimal" step="any" value="${+(+o[p]).toFixed(4)}" data-k="${k}" data-id="${o.id}" data-p="${p}"></label>`;
+const sl=(lab,k,o,p,ops)=>`<label class="fl"><span>${lab}</span><select data-k="${k}" data-id="${o.id}" data-p="${p}">${ops.map(v=>`<option${v===o[p]?' selected':''}>${v}</option>`).join('')}</select></label>`;
+const LN={point:'Point load',udl:'Uniform load',tri:'Triangular load',moment:'Applied moment'};
+const LF={point:l=>fl('Position (m)','l',l,'x')+fl('Force (kN)','l',l,'mag')+sl('Direction','l',l,'dir',['down','up','left','right']),
+ udl:l=>fl('Start (m)','l',l,'x')+fl('End (m)','l',l,'x2')+fl('w (kN/m)','l',l,'mag')+sl('Direction','l',l,'dir',['down','up']),
+ tri:l=>fl('Start (m)','l',l,'x')+fl('End (m)','l',l,'x2')+fl('Peak w (kN/m)','l',l,'mag')+sl('Direction','l',l,'dir',['down','up'])+sl('Peak at','l',l,'peak',['start','end']),
+ moment:l=>fl('Position (m)','l',l,'x')+fl('M (kN·m)','l',l,'mag')+sl('Sense','l',l,'dir',['ccw','cw'])};
+function renderPanel(){
+ const it=(o,t,fs)=>`<div class="it${S.sel===o.id?' sel':''}" data-sel="${o.id}"><div class="ih"><b>${t}</b><button class="btn" data-del="${o.id}" aria-label="Delete">✕</button></div><div class="fg">${fs}</div></div>`;
+ $('#L').value=S.L;
+ $('#list').innerHTML=names().map(s=>it(s,`Support ${s.n}`,sl('Type','s',s,'t',['pin','roller','fixed'])+fl('Position (m)','s',s,'x'))).join('')+S.ld.map(l=>it(l,LN[l.t],LF[l.t](l))).join('')||'<p>Nothing yet. Add a support and a load above.</p>'}
+function renderResults(){
+ const r=S.r=analyze();let h='';
+ if(r.st!=='ok')h=`<div class="card bad"><h2>${{error:'Invalid input',unstable:'Unstable or unsolvable',indet:'Statically indeterminate'}[r.st]}</h2><p>${r.msg}</p></div>`;
+ else h=`<div class="card"><span class="badge">✓ Statically determinate · ${r.un.length} unknowns, 3 equations</span><div class="rg">${r.un.map(u=>`<div class="rc"><small>${u.lab}</small><b>${f(u.v)}</b><small>${u.c==='m'?'kN·m':'kN'} ${dirT(u)}</small></div>`).join('')}</div><button class="btn" id="cp">Copy solution</button></div>`
+  +r.steps.map((s,i)=>`<details class="card" open><summary>Step ${i+1} · ${s.t}</summary>${s.L.map(l=>l[0]==='$'?`<div class="eq">${l.slice(1)}</div>`:`<p>${l}</p>`).join('')}</details>`).join('')
+  +sumCard(r)+'<p>Sign convention: → and ↑ positive, counterclockwise moments positive.</p>';
+ $('#results').innerHTML=h;renderDg()}
+const renderAll=()=>{renderPanel();renderResults();renderSvg()};
+/* ---------- interaction ---------- */
+const svg=$('#svg'),xm=e=>{const b=svg.getBoundingClientRect();return((e.clientX-b.left)*W/b.width-X0)/((X1-X0)/S.L)};
+svg.addEventListener('touchstart',e=>{if(e.target.closest('.dr'))e.preventDefault()},{passive:false});
+svg.addEventListener('pointerdown',e=>{const g=e.target.closest('.dr');if(!g||!(S.L>0))return;
+ const it=(g.dataset.k==='s'?S.sup:S.ld).find(i=>i.id==g.dataset.id);S.sel=it.id;drag={it,off:xm(e)-it.x};svg.setPointerCapture(e.pointerId);renderSvg();renderPanel()});
+svg.addEventListener('pointermove',e=>{if(!drag)return;const it=drag.it,len=it.x2!=null?it.x2-it.x:0;
+ let x=Math.round((xm(e)-drag.off)*20)/20;x=Math.max(0,Math.min(S.L-len,x));it.x=x;if(it.x2!=null)it.x2=x+len;renderSvg();renderResults()});
+const end=()=>{if(drag){drag=null;renderAll()}};svg.addEventListener('pointerup',end);svg.addEventListener('pointercancel',end);
+const add=t=>{const L=S.L,fr=[0,L].find(x=>!S.sup.some(s=>s.x===x)),mk={pin:()=>pin(fr??L/2),roller:()=>rol(fr??L/2),fixed:()=>fix(fr??L/2),point:()=>pt(L/2,10),udl:()=>ud(0,L,5),tri:()=>tr(0,L,5),moment:()=>mo(L/2,10)}[t]();
+ (['pin','roller','fixed'].includes(mk.t)?S.sup:S.ld).push(mk);S.sel=mk.id;renderAll()};
+$('#setup').addEventListener('click',e=>{const b=e.target.closest('button'),c=e.target.closest('[data-sel]');
+ if(b&&b.dataset.add)return add(b.dataset.add);
+ if(b&&b.dataset.del){const id=+b.dataset.del;S.sup=S.sup.filter(i=>i.id!==id);S.ld=S.ld.filter(i=>i.id!==id);S.sel=null;return renderAll()}
+ if(c){S.sel=+c.dataset.sel;document.querySelectorAll('.it').forEach(n=>n.classList.toggle('sel',n.dataset.sel==S.sel));renderSvg()}});
+$('#setup').addEventListener('change',e=>{const t=e.target;
+ if(t.id==='L'){const v=parseFloat(t.value);if(!isNaN(v))S.L=v;return renderAll()}
+ const p=t.dataset.p;if(!p)return;const o=(t.dataset.k==='s'?S.sup:S.ld).find(i=>i.id==t.dataset.id),v=parseFloat(t.value);
+ if(t.tagName==='SELECT')o[p]=t.value;else if(!isNaN(v))o[p]=v;renderAll()});
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.body.className='tab-'+b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-current',x===b))});
+$('#results').addEventListener('click',e=>{if(e.target.id!=='cp'||S.r.st!=='ok')return;const r=S.r,t=r.steps.map((s,i)=>`Step ${i+1}: ${s.t}\n`+s.L.map(l=>l.replace(/^\$/,'')).join('\n')).join('\n\n')+'\n\nReactions:\n'+r.un.map(u=>`${u.lab} = ${f(u.v)} ${u.c==='m'?'kN·m':'kN'} ${dirT(u)}`).join('\n');
+ try{navigator.clipboard.writeText(t).then(()=>{e.target.textContent='Copied ✓'})}catch(_){e.target.textContent='Copy unavailable'}});
+const exsel=$('#ex');exsel.innerHTML='<option value="">Examples…</option>'+Object.keys(EX).map(k=>`<option>${k}</option>`).join('');
+exsel.onchange=()=>{if(EX[exsel.value])Object.assign(S,EX[exsel.value](),{sel:null});exsel.value='';renderAll()};
+$('#dgb').onclick=()=>{S.dg=!S.dg;renderDg()};
+$('#dg').addEventListener('input',e=>{if(e.target.id==='qx'){S.qx=parseFloat(e.target.value);dgUpd()}});
+$('#dg').addEventListener('click',e=>{const sv=e.target.closest('#dsv');if(!sv)return;const b=sv.getBoundingClientRect(),x=((e.clientX-b.left)*W/b.width-X0)/((X1-X0)/S.L);S.qx=Math.max(0,Math.min(S.L,Math.round(x*20)/20));$('#qx').value=S.qx;dgUpd()});
+$('#clr').onclick=()=>{S.sup=[];S.ld=[];S.sel=null;renderAll()};
+const th=$('#th'),setTh=t=>{document.documentElement.dataset.theme=t;th.textContent=t==='dark'?'☀':'☾';try{localStorage.setItem('bl-theme',t)}catch(_){}};
+th.onclick=()=>setTh(document.documentElement.dataset.theme==='dark'?'light':'dark');
+try{setTh(localStorage.getItem('bl-theme')||'dark')}catch(_){setTh('dark')}
+Object.assign(S,EX['Simply supported · eccentric load']());renderAll();
+</script>
+</body>
+</html>
